@@ -191,8 +191,14 @@ abstract class LocalTrack extends Track {
       }
       stream = await rtc.navigator.mediaDevices.getDisplayMedia(constraints);
     } else if (options is CustomTrackOptions) {
-      // todo
-      return Future.error('Not supported yet');
+      if (rtc.navigator.mediaDevices is rtc.MediaDeviceNative) {
+        final nativeMediaDevices =
+            rtc.navigator.mediaDevices as rtc.MediaDeviceNative;
+        stream = await nativeMediaDevices.getCustomMedia(
+            options.provider, constraints);
+      } else {
+        return Future.error('Unsupported platform');
+      }
     } else {
       // options is CameraVideoTrackOptions
       stream = await rtc.navigator.mediaDevices.getUserMedia(constraints);
