@@ -156,16 +156,21 @@ abstract class LocalTrack extends Track {
   static Future<rtc.MediaStream> createStream(
     LocalTrackOptions options,
   ) async {
-    var constraints = <String, dynamic>{
-      'audio': options is AudioCaptureOptions
-          ? options.toMediaConstraintsMap()
-          : options is ScreenShareCaptureOptions
-              ? (options).captureScreenAudio
-              : false,
-      'video': options is VideoCaptureOptions
-          ? options.toMediaConstraintsMap()
-          : false,
-    };
+    Map<String, dynamic> constraints;
+    if (options is CustomTrackOptions) {
+      constraints = options.toMediaConstraintsMap();
+    } else {
+      constraints = <String, dynamic>{
+        'audio': options is AudioCaptureOptions
+            ? options.toMediaConstraintsMap()
+            : options is ScreenShareCaptureOptions
+                ? (options).captureScreenAudio
+                : false,
+        'video': options is VideoCaptureOptions
+            ? options.toMediaConstraintsMap()
+            : false,
+      };
+    }
 
     final rtc.MediaStream stream;
     if (options is ScreenShareCaptureOptions) {
@@ -185,6 +190,9 @@ abstract class LocalTrack extends Track {
         }
       }
       stream = await rtc.navigator.mediaDevices.getDisplayMedia(constraints);
+    } else if (options is CustomTrackOptions) {
+      // todo
+      return Future.error('Not supported yet');
     } else {
       // options is CameraVideoTrackOptions
       stream = await rtc.navigator.mediaDevices.getUserMedia(constraints);

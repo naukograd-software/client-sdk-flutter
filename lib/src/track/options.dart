@@ -208,6 +208,22 @@ abstract class LocalTrackOptions {
   Map<String, dynamic> toMediaConstraintsMap();
 }
 
+/// Class for options when creating a [LocalVideoTrack] or [LocalAudioTrack]
+/// with custom provider
+class CustomTrackOptions extends LocalTrackOptions {
+  // provider to request a track from
+  final String provider;
+
+  // custom constraints map
+  Map<String, dynamic> constraints;
+
+  CustomTrackOptions({required this.provider, required this.constraints})
+      : super();
+
+  @override
+  Map<String, dynamic> toMediaConstraintsMap() => constraints;
+}
+
 /// Base class for options when creating a [LocalVideoTrack].
 abstract class VideoCaptureOptions extends LocalTrackOptions {
   // final LocalVideoTrackType type;
