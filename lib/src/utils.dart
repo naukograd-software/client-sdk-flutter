@@ -658,6 +658,10 @@ String? buildStreamId(PublishOptions options, TrackSource source) {
       streamId += 'screenshare_video';
     case TrackSource.screenShareAudio:
       streamId += 'screenshare_audio';
+    case TrackSource.customVideo:
+      streamId += 'custom_video';
+    case TrackSource.customAudio:
+      streamId += 'custom_audio';
   }
   return streamId;
 }
