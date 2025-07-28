@@ -89,6 +89,8 @@ enum TrackSource {
   microphone,
   screenShareVideo,
   screenShareAudio,
+  customVideo,
+  customAudio,
 }
 
 enum TrackSubscriptionState {

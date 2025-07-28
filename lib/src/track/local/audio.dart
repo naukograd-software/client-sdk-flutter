@@ -133,7 +133,7 @@ class LocalAudioTrack extends LocalTrack
     final stream = await LocalTrack.createStream(options);
 
     var track = LocalAudioTrack(
-      TrackSource.microphone,
+      TrackSource.customAudio,
       stream,
       stream.getAudioTracks().first,
       options.audioOptions,

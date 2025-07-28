@@ -213,11 +213,7 @@ abstract class CustomTrackOptions extends LocalTrackOptions {
   // provider to request a track from
   final String provider;
 
-  // custom constraints map
-  Map<String, dynamic> constraints;
-
-  CustomTrackOptions({required this.provider, required this.constraints})
-      : super();
+  CustomTrackOptions({required this.provider}) : super();
 }
 
 class CustomAudioCaptureOptions extends CustomTrackOptions {
@@ -225,7 +221,6 @@ class CustomAudioCaptureOptions extends CustomTrackOptions {
 
   CustomAudioCaptureOptions({
     required super.provider,
-    required super.constraints,
     required this.audioOptions,
   });
 
