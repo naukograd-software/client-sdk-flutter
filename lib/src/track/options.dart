@@ -212,8 +212,9 @@ abstract class LocalTrackOptions {
 abstract class CustomTrackOptions extends LocalTrackOptions {
   // provider to request a track from
   final String provider;
+  Map<String, dynamic>? constraints;
 
-  CustomTrackOptions({required this.provider}) : super();
+  CustomTrackOptions({required this.provider, this.constraints}) : super();
 }
 
 class CustomAudioCaptureOptions extends CustomTrackOptions {
@@ -222,13 +223,17 @@ class CustomAudioCaptureOptions extends CustomTrackOptions {
   CustomAudioCaptureOptions({
     required super.provider,
     required this.audioOptions,
+    super.constraints,
   });
 
   @override
   Map<String, dynamic> toMediaConstraintsMap() {
-    final constaints = audioOptions.toMediaConstraintsMap();
+    final audioConstraints = audioOptions.toMediaConstraintsMap();
     final audioMap = <String, dynamic>{};
-    audioMap['audio'] = constaints;
+    audioMap['audio'] = audioConstraints;
+    if (constraints != null) {
+      audioMap.addAll(constraints!);
+    }
     return audioMap;
   }
 }
