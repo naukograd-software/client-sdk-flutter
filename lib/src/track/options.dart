@@ -227,9 +227,7 @@ class CustomAudioCaptureOptions extends CustomTrackOptions {
   @override
   Map<String, dynamic> toMediaConstraintsMap() {
     final constaints = audioOptions.toMediaConstraintsMap();
-    final audioMap = <String, dynamic>{};
-    audioMap['audio'] = constaints;
-    return audioMap;
+    return constaints;
   }
 }
 
