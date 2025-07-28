@@ -20,7 +20,6 @@ import '../track/local/audio.dart';
 import '../track/local/video.dart';
 import '../types/video_parameters.dart';
 import 'processor.dart';
-
 import 'processor_native.dart'
     if (dart.library.js_interop) 'processor_web.dart';
 
@@ -210,7 +209,7 @@ abstract class LocalTrackOptions {
 
 /// Class for options when creating a [LocalVideoTrack] or [LocalAudioTrack]
 /// with custom provider
-class CustomTrackOptions extends LocalTrackOptions {
+abstract class CustomTrackOptions extends LocalTrackOptions {
   // provider to request a track from
   final String provider;
 
@@ -219,9 +218,22 @@ class CustomTrackOptions extends LocalTrackOptions {
 
   CustomTrackOptions({required this.provider, required this.constraints})
       : super();
+}
+
+class CustomAudioCaptureOptions extends CustomTrackOptions {
+  final AudioCaptureOptions audioOptions;
+
+  CustomAudioCaptureOptions({
+    required super.provider,
+    required super.constraints,
+    required this.audioOptions,
+  });
 
   @override
-  Map<String, dynamic> toMediaConstraintsMap() => constraints;
+  Map<String, dynamic> toMediaConstraintsMap() {
+    final constaints = audioOptions.toMediaConstraintsMap();
+    return constaints;
+  }
 }
 
 /// Base class for options when creating a [LocalVideoTrack].

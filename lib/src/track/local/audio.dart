@@ -47,6 +47,7 @@ class LocalAudioTrack extends LocalTrack
   }
 
   num? _currentBitrate;
+
   get currentBitrate => _currentBitrate;
   AudioSenderStats? prevStats;
 
@@ -125,6 +126,25 @@ class LocalAudioTrack extends LocalTrack
           stream,
           track,
         );
+
+  /// Creates a new audio track from the custom audio input device.
+  static Future<LocalAudioTrack> custom(
+      CustomAudioCaptureOptions options) async {
+    final stream = await LocalTrack.createStream(options);
+
+    var track = LocalAudioTrack(
+      TrackSource.microphone,
+      stream,
+      stream.getAudioTracks().first,
+      options.audioOptions,
+    );
+
+    if (options.audioOptions.processor != null) {
+      await track.setProcessor(options.audioOptions.processor);
+    }
+
+    return track;
+  }
 
   /// Creates a new audio track from the default audio input device.
   static Future<LocalAudioTrack> create([
