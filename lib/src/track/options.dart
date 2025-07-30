@@ -21,7 +21,7 @@ import '../track/local/video.dart';
 import '../types/video_parameters.dart';
 import 'processor.dart';
 import 'processor_native.dart'
-    if (dart.library.js_interop) 'processor_web.dart';
+if (dart.library.js_interop) 'processor_web.dart';
 
 /// A type that represents front or back of the camera.
 enum CameraPosition {
@@ -36,7 +36,8 @@ enum CameraExposureMode { auto, locked }
 /// Convenience extension for [CameraPosition].
 extension CameraPositionExt on CameraPosition {
   /// Return a [CameraPosition] which front and back is switched.
-  CameraPosition switched() => {
+  CameraPosition switched() =>
+      {
         CameraPosition.front: CameraPosition.back,
         CameraPosition.back: CameraPosition.front,
       }[this]!;
@@ -65,11 +66,11 @@ class CameraCaptureOptions extends VideoCaptureOptions {
     this.stopCameraCaptureOnMute = true,
     TrackProcessor<VideoProcessorOptions>? processor,
   }) : super(
-          params: params,
-          deviceId: deviceId,
-          maxFrameRate: maxFrameRate,
-          processor: processor,
-        );
+    params: params,
+    deviceId: deviceId,
+    maxFrameRate: maxFrameRate,
+    processor: processor,
+  );
 
   CameraCaptureOptions.from({required VideoCaptureOptions captureOptions})
       : cameraPosition = CameraPosition.front,
@@ -77,10 +78,10 @@ class CameraCaptureOptions extends VideoCaptureOptions {
         exposureMode = CameraExposureMode.auto,
         stopCameraCaptureOnMute = true,
         super(
-          params: captureOptions.params,
-          deviceId: captureOptions.deviceId,
-          maxFrameRate: captureOptions.maxFrameRate,
-        );
+        params: captureOptions.params,
+        deviceId: captureOptions.deviceId,
+        maxFrameRate: captureOptions.maxFrameRate,
+      );
 
   @override
   Map<String, dynamic> toMediaConstraintsMap() {
@@ -88,7 +89,7 @@ class CameraCaptureOptions extends VideoCaptureOptions {
       ...super.toMediaConstraintsMap(),
       if (deviceId == null)
         'facingMode':
-            cameraPosition == CameraPosition.front ? 'user' : 'environment'
+        cameraPosition == CameraPosition.front ? 'user' : 'environment'
     };
     if (deviceId != null && deviceId!.isNotEmpty) {
       if (kIsWeb) {
@@ -123,7 +124,7 @@ class CameraCaptureOptions extends VideoCaptureOptions {
         deviceId: deviceId ?? this.deviceId,
         maxFrameRate: maxFrameRate ?? this.maxFrameRate,
         stopCameraCaptureOnMute:
-            stopCameraCaptureOnMute ?? this.stopCameraCaptureOnMute,
+        stopCameraCaptureOnMute ?? this.stopCameraCaptureOnMute,
       );
 }
 
@@ -153,12 +154,11 @@ class ScreenShareCaptureOptions extends VideoCaptureOptions {
     VideoParameters params = VideoParametersPresets.screenShareH1080FPS15,
   }) : super(params: params, deviceId: sourceId, maxFrameRate: maxFrameRate);
 
-  ScreenShareCaptureOptions.from(
-      {this.useiOSBroadcastExtension = false,
-      this.captureScreenAudio = false,
-      this.preferCurrentTab = false,
-      this.selfBrowserSurface,
-      required VideoCaptureOptions captureOptions})
+  ScreenShareCaptureOptions.from({this.useiOSBroadcastExtension = false,
+    this.captureScreenAudio = false,
+    this.preferCurrentTab = false,
+    this.selfBrowserSurface,
+    required VideoCaptureOptions captureOptions})
       : super(params: captureOptions.params);
 
   ScreenShareCaptureOptions copyWith({
@@ -172,7 +172,7 @@ class ScreenShareCaptureOptions extends VideoCaptureOptions {
   }) =>
       ScreenShareCaptureOptions(
         useiOSBroadcastExtension:
-            useiOSBroadcastExtension ?? this.useiOSBroadcastExtension,
+        useiOSBroadcastExtension ?? this.useiOSBroadcastExtension,
         captureScreenAudio: captureScreenAudio ?? this.captureScreenAudio,
         params: params ?? this.params,
         sourceId: sourceId ?? deviceId,
@@ -230,9 +230,11 @@ class CustomAudioCaptureOptions extends CustomTrackOptions {
   Map<String, dynamic> toMediaConstraintsMap() {
     final audioConstraints = audioOptions.toMediaConstraintsMap();
     final audioMap = <String, dynamic>{};
+    final customMap = <String, dynamic>{};
     audioMap['audio'] = audioConstraints;
     if (constraints != null) {
-      audioMap.addAll(constraints!);
+      customMap.addAll(constraints!);
+      audioMap['custom'] = customMap;
     }
     return audioMap;
   }
